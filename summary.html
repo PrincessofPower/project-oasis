@@ -66,6 +66,46 @@
     border-left: 2px solid var(--gold);
   }
 
+  .trust {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-left: 3px solid var(--teal);
+    border-radius: 8px;
+    padding: 16px 24px 18px;
+    margin-bottom: 40px;
+  }
+
+  .trust-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--teal);
+    margin: 0 0 12px;
+  }
+
+  .trust-body {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .trust-item {
+    flex: 1 1 260px;
+    font-size: 13px;
+    color: var(--text-secondary);
+  }
+
+  .trust-item strong {
+    display: block;
+    color: var(--text-primary);
+    font-size: 12px;
+    text-transform: none;
+    letter-spacing: normal;
+    margin-bottom: 4px;
+  }
+
   .stat-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -340,6 +380,24 @@
     more expensive to sign.
   </p>
 
+  <div class="trust">
+    <p class="trust-title">Keeping the AI Accurate and Honest</p>
+    <div class="trust-body">
+    <div class="trust-item">
+      <strong>Every number is real</strong>
+      The AI never generates a stat itself. It only looks up answers from a fixed
+      set of functions that query the real data table, so every number traces
+      back to an actual row in the dataset.
+    </div>
+    <div class="trust-item">
+      <strong>Low confidence is never hidden</strong>
+      When a creator's score is based on just one video, the tool says so
+      explicitly, so a lucky post never gets presented with the same confidence
+      as a real, repeated pattern.
+    </div>
+    </div>
+  </div>
+
   <div class="stat-row">
     <div class="stat">
       <div class="stat-value">802</div>
@@ -359,7 +417,7 @@
     </div>
   </div>
 
-  <h2>Lead With These</h2>
+  <h2>High-Confidence Rising Creators</h2>
   <p class="section-sub">Rising, 3+ videos, real pattern, not a lucky post</p>
   <div class="reel">
     <div class="card">
@@ -421,7 +479,7 @@
   </div>
 
   <div class="callout">
-    <p class="callout-title">Most Undervalued, Handle With Care</p>
+    <p class="callout-title">Most Undervalued, Low Confidence</p>
     <div class="uv-list">
       <div class="uv-item">
         <span class="uv-name">anwarali0125</span>
@@ -434,8 +492,8 @@
     </div>
     <p class="callout-note">
       Both scores rest on a single video. A number this high on this few views
-      can mean a real find, or an anomalous post. Worth a manual look before
-      it goes on a slide as a confirmed lead.
+      can reflect a real find, or an anomalous post that hasn't been tested
+      by repeat performance yet.
     </p>
   </div>
 
@@ -505,7 +563,7 @@
     <ul>
       <li>This is a 2020 snapshot, not live data. None of these are current leads.</li>
       <li>No follower count exists in the data, so "reach" means views, not audience size.</li>
-      <li>The broader 361-creator Rising list includes many single-video creators. Treat those as leads to watch, not confirmed bets. The 16 names above are the ones to lead with.</li>
+      <li>The broader 361-creator Rising list includes many single-video creators. Those are leads worth watching, not yet confirmed bets, unlike the 16 high-confidence names above.</li>
     </ul>
   </div>
 
