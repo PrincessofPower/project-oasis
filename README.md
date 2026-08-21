@@ -4,6 +4,8 @@
 
 # Project Oasis: Creator Partnerships Trending TikTok Analysis
 
+**[Live Dashboard →](https://princessofpower.github.io/project-oasis/dashboard.html)**
+
 ![Project Oasis Data Flow](assets/data-flow.png)
 
 ## What this is
