@@ -23,6 +23,13 @@ import sys
 
 import pandas as pd
 
+# Force UTF-8 output on Windows consoles, which default to a limited
+# encoding (cp1252) that can't print emojis or special characters
+# sometimes present in captions.
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+
 MIN_VIDEOS_FOR_HIGH_CONFIDENCE = 3
 
 
@@ -184,11 +191,11 @@ def run(summary_path, raw_path, out_dir):
     os.makedirs(out_dir, exist_ok=True)
 
     md_path = os.path.join(out_dir, "creative_briefs.md")
-    with open(md_path, "w") as f:
+    with open(md_path, "w", encoding="utf-8") as f:
         f.write(render_markdown(briefs))
 
     csv_path = os.path.join(out_dir, "creative_briefs.csv")
-    pd.DataFrame(briefs).to_csv(csv_path, index=False)
+    pd.DataFrame(briefs).to_csv(csv_path, index=False, encoding="utf-8")
 
     return briefs, md_path, csv_path
 
