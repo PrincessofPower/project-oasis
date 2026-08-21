@@ -1,5 +1,7 @@
 # Project Oasis: Creator Partnerships Trending TikTok Analysis
 
+![Project Oasis Data Flow](assets/data-flow.png)
+
 ## What this is
 A lightweight analysis tool for identifying "promising" creators from a batch of
 trending TikTok videos, built for a Head of Creator Partnerships who needs a
