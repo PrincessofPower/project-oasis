@@ -64,6 +64,21 @@
   .chart-canvas-wrap { position: relative; width: 100%; }
   .chart-caption { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
 
+  .briefs-panel { background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px; padding: 20px 22px; margin-bottom: 40px; }
+  .briefs-controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
+  .briefs-btn { background: var(--gold); color: var(--bg); border: none; border-radius: 6px; padding: 9px 18px; font-family: var(--font-body); font-weight: 600; font-size: 13px; cursor: pointer; }
+  .briefs-btn:hover { opacity: 0.9; }
+  .briefs-btn.secondary { background: var(--surface-raised); color: var(--text-primary); border: 1px solid var(--hairline); display: none; }
+  .briefs-note { font-size: 12px; color: var(--text-muted); margin: 6px 0 16px; }
+  .brief-card { background: var(--surface-raised); border: 1px solid var(--hairline); border-left: 3px solid var(--gold); border-radius: 8px; padding: 16px 18px; margin-bottom: 12px; }
+  .brief-card-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .brief-card-name { font-family: var(--font-display); font-weight: 700; font-size: 18px; }
+  .brief-card-rank { font-family: var(--font-mono); font-size: 12px; color: var(--gold); }
+  .brief-field { font-size: 13px; margin-bottom: 6px; color: var(--text-secondary); }
+  .brief-field strong { color: var(--text-primary); }
+  .brief-outreach { background: var(--bg); border-radius: 6px; padding: 10px 12px; margin-top: 8px; font-size: 12px; color: var(--text-secondary); white-space: pre-wrap; font-family: var(--font-mono); }
+  #briefs-output { display: none; margin-top: 18px; }
+
   .chat-panel { background: var(--surface); border: 1px solid var(--hairline); border-radius: 10px; padding: 20px 22px; margin-bottom: 40px; }
   .mode-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
   .mode-btn { background: var(--surface-raised); border: 1px solid var(--hairline); color: var(--text-secondary); border-radius: 6px; padding: 7px 14px; font-family: var(--font-body); font-size: 12px; font-weight: 600; cursor: pointer; }
@@ -173,6 +188,18 @@
       <canvas id="durationChart" role="img" aria-label="Bar chart of median engagement rate by video duration: 0 to 10 seconds 7.35 percent, 10 to 20 seconds 8.78 percent, 20 to 30 seconds 9.57 percent, 30 plus seconds 10.97 percent"></canvas>
     </div>
     <p class="chart-caption">Shows median engagement rate across all 1,000 videos, grouped by length. Engagement rises steadily from 7.4% under 10 seconds to 11.0% over 30 seconds, worth factoring into which format to recommend when briefing a creator on partnership content. A partnership video built in the wrong format risks underperforming even with the right creator attached.</p>
+  </div>
+
+  <h2>Generate Creative Briefs</h2>
+  <p class="section-sub">Turns the 16 high-confidence Rising creators into priority-ranked, actionable briefs</p>
+  <div class="briefs-panel">
+    <div class="briefs-controls">
+      <button class="briefs-btn" id="generate-briefs-btn">Run Brief Generator</button>
+      <button class="briefs-btn secondary" id="download-md-btn">Download .md</button>
+      <button class="briefs-btn secondary" id="download-csv-btn">Download .csv</button>
+    </div>
+    <p class="briefs-note">Runs the same real logic as brief_generator.py, priority rank, budget tier, content angle, and an outreach draft, computed live from the real data embedded in this page.</p>
+    <div id="briefs-output"></div>
   </div>
 
   <h2>Ask About the Data</h2>
@@ -595,6 +622,148 @@ document.querySelectorAll(".chat-suggestion").forEach(el => {
 });
 
 // ---------------------------------------------------------------------
+
+// ---------------------------------------------------------------------
+// Creative Brief Generator: ported from brief_generator.py, runs entirely
+// client-side against the real content signals for the 16 high-confidence
+// Rising creators (embedded below, computed from the raw dataset).
+// ---------------------------------------------------------------------
+const BRIEF_INPUT = 
+[{"author": "bundaddy", "video_count": 5, "median_engagement_rate": 0.2304504504504504, "median_views": 99900.0, "avg_duration": 32.4, "pct_original_music": 0.8, "top_hashtag": "fyp", "sample_caption": "women are not exempt from being controlling and toxic #fyp #foryou #foryoupage #RhymePOV #FootlongShuffle #GhostMode"}, {"author": "xaaku", "video_count": 3, "median_engagement_rate": 0.2122707100591715, "median_views": 143700.0, "avg_duration": 11.7, "pct_original_music": 1.0, "top_hashtag": "naruto", "sample_caption": "\u041e\u0442\u0432\u0435\u0442\u0438\u0442\u044c \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044e @anwexte \u0432\u043e\u0442 \u0431\u043e\u0433\u0438\u043d\u044f \u0442\u0435\u043c\u0430\u0440\u0438) #naruto #temari #shikamaru #gaara #anime #animeedit #recommendations #fyp"}, {"author": "erinwilliams_1", "video_count": 3, "median_engagement_rate": 0.1942038834951456, "median_views": 309000.0, "avg_duration": 12.0, "pct_original_music": 0.67, "top_hashtag": "equestrian", "sample_caption": "How fast can you get your stirrup \ud83d\udc40 #equestrian #horsegirl #horseriding #horse #dressage #equine #stallion"}, {"author": "chris_wells_", "video_count": 3, "median_engagement_rate": 0.1924711696869851, "median_views": 64400.0, "avg_duration": 26.7, "pct_original_music": 1.0, "top_hashtag": null, "sample_caption": "Reply to @jr6383638368373837"}, {"author": "liamkratos", "video_count": 3, "median_engagement_rate": 0.1841620111731843, "median_views": 62100.0, "avg_duration": 8.0, "pct_original_music": 1.0, "top_hashtag": "vibetiktok", "sample_caption": "Antwoorden aan @seereenmarabeh obviously I speak Dutch as well\ud83c\udf3f #vibetiktok #fy #fyp #foryou #likelike #tiktoktraditions #dutch"}, {"author": "papaswolio", "video_count": 4, "median_engagement_rate": 0.166994954074245, "median_views": 266600.0, "avg_duration": 21.5, "pct_original_music": 0.75, "top_hashtag": "gotothegym", "sample_caption": "Reply to @frosty6892 Sk\u00e5l #gotothegym #viking #vikingtiktok #thor #mjolnir #fitfam #gymtime #workout"}, {"author": "jadeanna_", "video_count": 3, "median_engagement_rate": 0.1472375601926163, "median_views": 598200.0, "avg_duration": 23.7, "pct_original_music": 1.0, "top_hashtag": null, "sample_caption": "I m s o r r y"}, {"author": "maxzg7", "video_count": 3, "median_engagement_rate": 0.1454140127388535, "median_views": 188400.0, "avg_duration": 24.3, "pct_original_music": 1.0, "top_hashtag": "fight", "sample_caption": "#fight#anime#animeedit#animefight#vs#berry#viral#pibes#parati#fyp"}, {"author": "manoulucia", "video_count": 3, "median_engagement_rate": 0.1357164179104477, "median_views": 67000.0, "avg_duration": 26.3, "pct_original_music": 0.67, "top_hashtag": "voorjou", "sample_caption": "Beep boop\ud83e\udd16\ud83d\udda8 #tekenen #voorjou #netherlands #dutch"}, {"author": "faheemsajjad07", "video_count": 3, "median_engagement_rate": 0.1145578231292517, "median_views": 12800.0, "avg_duration": 11.7, "pct_original_music": 0.33, "top_hashtag": "jontysquad", "sample_caption": "Viral kyu nhi ho rha mein?\ud83e\udd40\ud83d\udc94...Foryou? #raplikechester #jontysquad #faheemsajjad07 #standwithkashimr #slowmo #transition #viralvideo"}, {"author": "riovacci", "video_count": 9, "median_engagement_rate": 0.1106933333333333, "median_views": 762500.0, "avg_duration": 19.9, "pct_original_music": 0.67, "top_hashtag": "ohno", "sample_caption": "The dogs went right in after him \ud83d\ude05\u00a0@salty.bun"}, {"author": "timmytimmadome", "video_count": 28, "median_engagement_rate": 0.1091549118281388, "median_views": 84250.0, "avg_duration": 34.0, "pct_original_music": 0.71, "top_hashtag": "foryoupage", "sample_caption": "Silent conventional tings #foryoupage #fyp #foryou #powerlifting #bodybuilding #deadlift #fitness #workout #fittok #powertok"}, {"author": "zopepijn", "video_count": 5, "median_engagement_rate": 0.1071651495448634, "median_views": 66100.0, "avg_duration": 22.8, "pct_original_music": 1.0, "top_hashtag": "fyp", "sample_caption": "Gamen met JP, gezellig man #amongus #diorsauvage #gamen #voorjou #hertje"}, {"author": "benjamin_robert_graham", "video_count": 12, "median_engagement_rate": 0.0938272593702284, "median_views": 33250.0, "avg_duration": 14.7, "pct_original_music": 0.83, "top_hashtag": "duet", "sample_caption": "Absolute power is a helluva drug. #power #legday #boss #ceo #truestory #fitness"}, {"author": "mo.rab", "video_count": 6, "median_engagement_rate": 0.0919772727272727, "median_views": 43200.0, "avg_duration": 15.0, "pct_original_music": 1.0, "top_hashtag": "\u0634\u0644\u0629_\u0647\u0648\u0644\u0646\u062f\u0627", "sample_caption": "\u0628\u0643\u0631\u064a \u0645\u0627\u0647\u0645\u0648 \u0627\u0644\u0627 \u0645\u0631\u062a\u0648. \u0648\u0627\u0644\u0627\u0643\u0644 \ud83d\udc94\ud83e\udd7a\u064a\u0627\u062e\u0633\u0627\u0631\u0629  \u0627\u0644\u0634\u0643\u0644\u0627\u0637\u0627\u062a \u0628\u0633"}, {"author": "funniest.f1.moments", "video_count": 7, "median_engagement_rate": 0.0911492281303602, "median_views": 103600.0, "avg_duration": 14.9, "pct_original_music": 0.86, "top_hashtag": "danielricciardo", "sample_caption": "I feel so sorry for you George\ud83d\udc94 #georgerussell #mercedes #f1 #formula1 #fy #foryou"}];
+
+function fmtPctBrief(v) { return (v * 100).toFixed(1) + "%"; }
+
+function budgetTier(row) {
+  const views = row.median_views, engagement = row.median_engagement_rate;
+  if (views >= 500000) return "Tier 1 (high reach, negotiate rate against 500K+ median views)";
+  if (views >= 100000 && engagement >= 0.15) return "Tier 2 (strong reach + above-average engagement, good value)";
+  if (engagement >= 0.15) return "Tier 3 (smaller reach, high engagement, low-cost test partner)";
+  return "Tier 4 (smaller reach, moderate engagement, low-risk trial)";
+}
+
+function contentAngle(signals) {
+  const parts = [];
+  if (signals.avg_duration !== null) {
+    if (signals.avg_duration <= 15) parts.push("short, fast-cut format (their videos average under 15 seconds)");
+    else if (signals.avg_duration <= 25) parts.push("mid-length format (their videos average 15-25 seconds)");
+    else parts.push("longer-form format (their videos average over 25 seconds)");
+  }
+  if (signals.pct_original_music !== null) {
+    parts.push(signals.pct_original_music >= 0.8 ? "original audio or voiceover, not trending sounds" : "trending/popular audio");
+  }
+  if (signals.top_hashtag) parts.push(`their established niche around #${signals.top_hashtag}`);
+  if (parts.length === 0) parts.push("no strong content pattern detected yet, treat as an open brief");
+  return parts.join("; ");
+}
+
+function storyboardConcept(author, signals, engagementRate) {
+  const duration = signals.avg_duration || 15;
+  const niche = signals.top_hashtag || "their usual content style";
+  return `A ${Math.round(duration)}-second partnership video in ${author}'s established style: open on ${niche}-adjacent content to match audience expectations, weave in the product/brand naturally within the first 3 seconds (their ${fmtPctBrief(engagementRate)} engagement rate suggests hook-dependent viewing), close on a call to action that matches their existing caption tone.`;
+}
+
+function outreachDraft(author, row, signals) {
+  const engagement = fmtPctBrief(row.median_engagement_rate);
+  const niche = signals.top_hashtag;
+  const nicheLine = niche ? ` love what you've been doing in the ${niche} space` : " love your content";
+  return `Hi ${author},\n\nI've been following your videos and${nicheLine}. Your engagement rate has been running around ${engagement} across your last ${row.video_count} posts, which is well above what we typically see, and it's clear your audience trusts what you put out.\n\nWe'd love to explore a partnership. Based on your usual format (${contentAngle(signals)}), we think there's a natural fit for something that keeps your voice front and center rather than feeling like a typical ad.\n\nWould you be open to a quick call this week to talk through what that could look like?\n\nBest,\n[Your name]`;
+}
+
+function generateBriefs() {
+  return BRIEF_INPUT.map((row, i) => {
+    const angle = contentAngle(row);
+    return {
+      priority_rank: i + 1,
+      creator: row.author,
+      video_count: row.video_count,
+      engagement_rate: fmtPctBrief(row.median_engagement_rate),
+      median_views: Math.round(row.median_views).toLocaleString(),
+      budget_tier: budgetTier(row),
+      content_angle: angle,
+      storyboard_concept: storyboardConcept(row.author, row, row.median_engagement_rate),
+      outreach_draft: outreachDraft(row.author, row, row),
+      sample_caption: row.sample_caption || "(no caption on file)"
+    };
+  });
+}
+
+let LAST_BRIEFS = null;
+
+function renderBriefs(briefs) {
+  const output = document.getElementById("briefs-output");
+  output.innerHTML = briefs.map(b => `
+    <div class="brief-card">
+      <div class="brief-card-head">
+        <span class="brief-card-name">${b.priority_rank}. ${b.creator}</span>
+        <span class="brief-card-rank">${b.engagement_rate} · ${b.video_count} videos</span>
+      </div>
+      <div class="brief-field"><strong>Budget tier:</strong> ${b.budget_tier}</div>
+      <div class="brief-field"><strong>Content angle:</strong> ${b.content_angle}</div>
+      <div class="brief-field"><strong>Storyboard concept:</strong> ${b.storyboard_concept}</div>
+      <div class="brief-field"><strong>Their voice:</strong> "${b.sample_caption}"</div>
+      <div class="brief-outreach">${b.outreach_draft}</div>
+    </div>
+  `).join("");
+  output.style.display = "block";
+}
+
+function briefsToMarkdown(briefs) {
+  const lines = ["# Project Oasis: Creative Partnership Briefs", "",
+    "Generated from real engagement data for the 16 high-confidence Rising creators.",
+    "Each brief is a starting point for outreach and creative planning, not a final script.", ""];
+  briefs.forEach(b => {
+    lines.push(`## ${b.priority_rank}. ${b.creator}`);
+    lines.push(`- **Engagement rate:** ${b.engagement_rate} across ${b.video_count} videos`);
+    lines.push(`- **Median views:** ${b.median_views}`);
+    lines.push(`- **Suggested budget tier:** ${b.budget_tier}`);
+    lines.push(`- **Content angle:** ${b.content_angle}`);
+    lines.push(`- **Storyboard concept:** ${b.storyboard_concept}`);
+    lines.push(`- **Their voice (sample caption):** "${b.sample_caption}"`);
+    lines.push(`- **Outreach draft:**`);
+    lines.push("  \`\`\`");
+    b.outreach_draft.split("\n").forEach(line => lines.push(`  ${line}`));
+    lines.push("  \`\`\`");
+    lines.push("");
+  });
+  return lines.join("\n");
+}
+
+function briefsToCsv(briefs) {
+  const headers = ["priority_rank", "creator", "video_count", "engagement_rate", "median_views", "budget_tier", "content_angle", "storyboard_concept", "outreach_draft", "sample_caption"];
+  const escape = (v) => `"${String(v).replace(/"/g, '""')}"`;
+  const rows = briefs.map(b => headers.map(h => escape(b[h])).join(","));
+  return [headers.join(","), ...rows].join("\n");
+}
+
+function downloadFile(filename, content, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+document.getElementById("generate-briefs-btn").addEventListener("click", () => {
+  LAST_BRIEFS = generateBriefs();
+  renderBriefs(LAST_BRIEFS);
+  document.getElementById("download-md-btn").style.display = "inline-block";
+  document.getElementById("download-csv-btn").style.display = "inline-block";
+});
+
+document.getElementById("download-md-btn").addEventListener("click", () => {
+  if (!LAST_BRIEFS) return;
+  downloadFile("creative_briefs.md", briefsToMarkdown(LAST_BRIEFS), "text/markdown");
+});
+
+document.getElementById("download-csv-btn").addEventListener("click", () => {
+  if (!LAST_BRIEFS) return;
+  downloadFile("creative_briefs.csv", briefsToCsv(LAST_BRIEFS), "text/csv");
+});
+
 // Render charts once Chart.js has loaded
 // ---------------------------------------------------------------------
 new Chart(document.getElementById("scatterChart"), {
