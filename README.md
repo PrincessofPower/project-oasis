@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/oasis-hero.jpg" width="200" alt="Project Oasis">
+</p>
+
 # Project Oasis: Creator Partnerships Trending TikTok Analysis
 
 ![Project Oasis Data Flow](assets/data-flow.png)
@@ -36,7 +40,12 @@ Creators are segmented into:
 - `analysis.py`: loads CSV, computes engagement rate, consistency, efficiency,
   confidence flag, and segments
 - `summary.md` / `summary.html`: the one-screen view
+- `dashboard.html`: interactive filterable dashboard with a live/demo Q&A chat
 - `qa.py`: Q&A interface powered by an LLM over the precomputed creator table
+- `brief_generator.py`: turns the 16 high-confidence Rising creators into
+  actionable creative briefs, priority rank, budget tier, content angle,
+  storyboard concept, and an outreach message draft, one per creator
+- `briefs/creative_briefs.md` / `briefs/creative_briefs.csv`: the generated briefs
 - `data_flow.md`: how a question turns into an answer
 - `data/trending_tiktoks.csv`: the raw input dataset
 - `data/creator_summary.csv`: the generated creator-level summary
@@ -45,8 +54,9 @@ Creators are segmented into:
 ## How to run
 1. `pip install -r requirements.txt`
 2. `python analysis.py data/trending_tiktoks.csv --out data/creator_summary.csv` to produce the creator summary table
-3. `export ANTHROPIC_API_KEY=your_key_here` (get one at console.anthropic.com)
-4. `python qa.py --data data/creator_summary.csv` to ask follow-up questions in plain English
+3. `python brief_generator.py --summary data/creator_summary.csv --raw data/trending_tiktoks.csv --out briefs/` to generate creative briefs for the high-confidence Rising creators
+4. `export ANTHROPIC_API_KEY=your_key_here` (get one at console.anthropic.com)
+5. `python qa.py --data data/creator_summary.csv` to ask follow-up questions in plain English
 
 ## Limitations
 - No follower count means "reach" and "growth potential" are inferred, not directly measured
