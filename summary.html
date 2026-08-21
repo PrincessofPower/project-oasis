@@ -218,7 +218,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
-    margin-bottom: 48px;
+    margin-bottom: 24px;
   }
 
   .seg {
@@ -238,6 +238,72 @@
     font-family: var(--font-mono);
     font-size: 20px;
     color: var(--text-primary);
+  }
+
+  .chart {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 20px 24px 16px;
+    margin-bottom: 48px;
+  }
+
+  .chart-title {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 0 0 18px;
+  }
+
+  .bar-row {
+    display: grid;
+    grid-template-columns: 90px 1fr 70px;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .bar-row:last-child { margin-bottom: 0; }
+
+  .bar-label {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .bar-track {
+    background: rgba(243, 238, 250, 0.06);
+    border-radius: 5px;
+    height: 22px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+  }
+
+  .bar-fill.rising { background: var(--gold); }
+  .bar-fill.proven { background: var(--teal); }
+  .bar-fill.breakout { background: var(--coral); }
+  .bar-fill.other { background: var(--text-muted); }
+
+  .bar-fill-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--bg);
+    font-weight: 500;
+  }
+
+  .bar-value {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-secondary);
+    text-align: right;
   }
 
   .caveats {
@@ -394,8 +460,48 @@
     </div>
   </div>
 
+  <div class="chart">
+    <p class="chart-title">Median engagement rate by segment</p>
+    <div class="bar-row">
+      <span class="bar-label">Rising</span>
+      <div class="bar-track">
+        <div class="bar-fill rising" style="width: 100%;">
+          <span class="bar-fill-label">361 creators</span>
+        </div>
+      </div>
+      <span class="bar-value">13.1%</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">Proven</span>
+      <div class="bar-track">
+        <div class="bar-fill proven" style="width: 97%;">
+          <span class="bar-fill-label">40 creators</span>
+        </div>
+      </div>
+      <span class="bar-value">12.7%</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">Other</span>
+      <div class="bar-track">
+        <div class="bar-fill other" style="width: 41%;">
+          <span class="bar-fill-label">362 creators</span>
+        </div>
+      </div>
+      <span class="bar-value">5.4%</span>
+    </div>
+    <div class="bar-row">
+      <span class="bar-label">Breakout</span>
+      <div class="bar-track">
+        <div class="bar-fill breakout" style="width: 40%;">
+          <span class="bar-fill-label">39 creators</span>
+        </div>
+      </div>
+      <span class="bar-value">5.2%</span>
+    </div>
+  </div>
+
   <div class="caveats">
-    <h2>Say This Part Out Loud</h2>
+    <h2>Worth Knowing</h2>
     <ul>
       <li>This is a 2020 snapshot, not live data. None of these are current leads.</li>
       <li>No follower count exists in the data, so "reach" means views, not audience size.</li>
