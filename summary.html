@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Oasis: Summary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1B1230;
+    --surface: #241938;
+    --surface-raised: #2C1F45;
+    --text-primary: #F3EEFA;
+    --text-secondary: #B3A6C9;
+    --text-muted: #8577A3;
+    --gold: #E8B34C;
+    --teal: #6FBEA8;
+    --coral: #D9724C;
+    --hairline: rgba(243, 238, 250, 0.1);
+    --font-display: 'Big Shoulders Display', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    line-height: 1.5;
+  }
+
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 48px 32px 64px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 8px;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(40px, 6vw, 64px);
+    line-height: 0.95;
+    margin: 0 0 20px;
+    letter-spacing: -0.01em;
+  }
+
+  .definition {
+    max-width: 640px;
+    color: var(--text-secondary);
+    font-size: 16px;
+    margin: 0 0 40px;
+    padding-left: 16px;
+    border-left: 2px solid var(--gold);
+  }
+
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 48px;
+  }
+
+  .stat {
+    background: var(--surface);
+    padding: 20px 18px;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 36px;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+
+  .stat-value.accent { color: var(--gold); }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 26px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    margin: 0 0 4px;
+  }
+
+  .section-sub {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin: 0 0 18px;
+  }
+
+  .reel {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 48px;
+    scrollbar-width: thin;
+  }
+
+  .card {
+    flex: 0 0 168px;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 10px;
+    padding: 16px 14px;
+    position: relative;
+  }
+
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 10px 10px 0 0;
+  }
+
+  .card-rank {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .card-name {
+    font-weight: 600;
+    font-size: 15px;
+    margin: 6px 0 12px;
+    word-break: break-word;
+  }
+
+  .card-metric {
+    font-family: var(--font-mono);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--gold);
+  }
+
+  .card-metric-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .card-meta {
+    font-size: 11px;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--hairline);
+    padding-top: 8px;
+    margin-top: 4px;
+  }
+
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-left: 3px solid var(--coral);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+  }
+
+  .callout-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin: 0 0 12px;
+  }
+
+  .uv-list {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .uv-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .uv-name { font-weight: 600; font-size: 15px; }
+  .uv-stat { font-family: var(--font-mono); color: var(--text-secondary); font-size: 13px; }
+
+  .callout-note {
+    color: var(--text-secondary);
+    font-size: 13px;
+    margin: 0;
+  }
+
+  .segments {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .seg {
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 14px 16px;
+    border: 1px solid var(--hairline);
+  }
+
+  .seg-name {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .seg-count {
+    font-family: var(--font-mono);
+    font-size: 20px;
+    color: var(--text-primary);
+  }
+
+  .caveats {
+    border-top: 1px solid var(--hairline);
+    padding-top: 24px;
+  }
+
+  .caveats h2 { font-size: 18px; color: var(--text-secondary); }
+
+  .caveats ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+
+  .caveats li { margin-bottom: 8px; }
+
+  @media (max-width: 640px) {
+    .stat-row { grid-template-columns: repeat(2, 1fr); }
+    .segments { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="eyebrow">Project Oasis — Creator Partnerships</p>
+  <h1>Who's worth<br>signing next.</h1>
+  <p class="definition">
+    "Promising" means consistent, above-average engagement across multiple videos,
+    not yet mega-scale. One-video outliers are excluded. Verified and high-view
+    accounts are down-weighted, since they're already discovered and likely
+    more expensive to sign.
+  </p>
+
+  <div class="stat-row">
+    <div class="stat">
+      <div class="stat-value">802</div>
+      <div class="stat-label">Creators analyzed</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value accent">16</div>
+      <div class="stat-label">High-confidence Rising picks</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">361</div>
+      <div class="stat-label">Rising overall, watch list</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">89%</div>
+      <div class="stat-label">Creators seen only once</div>
+    </div>
+  </div>
+
+  <h2>Lead With These</h2>
+  <p class="section-sub">Rising, 3+ videos, real pattern, not a lucky post</p>
+  <div class="reel">
+    <div class="card">
+      <div class="card-rank">01</div>
+      <div class="card-name">bundaddy</div>
+      <div class="card-metric-label">Engagement</div>
+      <div class="card-metric">23.0%</div>
+      <div class="card-meta">5 videos · 99.9K median views</div>
+    </div>
+    <div class="card">
+      <div class="card-rank">02</div>
+      <div class="card-name">xaaku</div>
+      <div class="card-metric-label">Engagement</div>
+      <div class="card-metric">21.2%</div>
+      <div class="card-meta">3 videos · 143.7K median views</div>
+    </div>
+    <div class="card">
+      <div class="card-rank">03</div>
+      <div class="card-name">erinwilliams_1</div>
+      <div class="card-metric-label">Engagement</div>
+      <div class="card-metric">19.4%</div>
+      <div class="card-meta">3 videos · 309K median views</div>
+    </div>
+    <div class="card">
+      <div class="card-rank">04</div>
+      <div class="card-name">chris_wells_</div>
+      <div class="card-metric-label">Engagement</div>
+      <div class="card-metric">19.2%</div>
+      <div class="card-meta">3 videos · 64.4K median views</div>
+    </div>
+    <div class="card">
+      <div class="card-rank">05</div>
+      <div class="card-name">liamkratos</div>
+      <div class="card-metric-label">Engagement</div>
+      <div class="card-metric">18.4%</div>
+      <div class="card-meta">3 videos · 62.1K median views</div>
+    </div>
+    <div class="card">
+      <div class="card-rank">06</div>
+      <div class="card-name">papaswolio</div>
+      <div class="card-metric-label">Engagement</div>
+      <div class="card-metric">16.7%</div>
+      <div class="card-meta">4 videos · 266.6K median views</div>
+    </div>
+    <div class="card">
+      <div class="card-rank">07</div>
+      <div class="card-name">jadeanna_</div>
+      <div class="card-metric-label">Engagement</div>
+      <div class="card-metric">14.7%</div>
+      <div class="card-meta">3 videos · 598.2K median views</div>
+    </div>
+    <div class="card">
+      <div class="card-rank">08</div>
+      <div class="card-name">maxzg7</div>
+      <div class="card-metric-label">Engagement</div>
+      <div class="card-metric">14.5%</div>
+      <div class="card-meta">3 videos · 188.4K median views</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p class="callout-title">Most Undervalued, Handle With Care</p>
+    <div class="uv-list">
+      <div class="uv-item">
+        <span class="uv-name">anwarali0125</span>
+        <span class="uv-stat">49.7% engagement · 943 median views · low confidence</span>
+      </div>
+      <div class="uv-item">
+        <span class="uv-name">zohaib_ali05</span>
+        <span class="uv-stat">31.9% engagement · 977 median views · low confidence</span>
+      </div>
+    </div>
+    <p class="callout-note">
+      Both scores rest on a single video. A number this high on this few views
+      can mean a real find, or an anomalous post. Worth a manual look before
+      it goes on a slide as a confirmed lead.
+    </p>
+  </div>
+
+  <h2>By Segment</h2>
+  <p class="section-sub">802 creators total</p>
+  <div class="segments">
+    <div class="seg">
+      <div class="seg-name">Rising</div>
+      <div class="seg-count">361 · 13.1%</div>
+    </div>
+    <div class="seg">
+      <div class="seg-name">Proven</div>
+      <div class="seg-count">40 · 12.7%</div>
+    </div>
+    <div class="seg">
+      <div class="seg-name">Breakout</div>
+      <div class="seg-count">39 · 5.2%</div>
+    </div>
+    <div class="seg">
+      <div class="seg-name">Other</div>
+      <div class="seg-count">362 · 5.4%</div>
+    </div>
+  </div>
+
+  <div class="caveats">
+    <h2>Say This Part Out Loud</h2>
+    <ul>
+      <li>This is a 2020 snapshot, not live data. None of these are current leads.</li>
+      <li>No follower count exists in the data, so "reach" means views, not audience size.</li>
+      <li>The broader 361-creator Rising list includes many single-video creators. Treat those as leads to watch, not confirmed bets. The 16 names above are the ones to lead with.</li>
+    </ul>
+  </div>
+
+</div>
+</body>
+</html>
